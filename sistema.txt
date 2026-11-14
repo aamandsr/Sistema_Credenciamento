@@ -23,7 +23,7 @@ Regras de Negócio
 ------------------------------------------------------
 Melhorias a serem implementadas
 
--criar página imprimir etiqueta, nela vai listar os usuarios e ter a opção de imprimir, por enquanto a opção de imprimir vai criar um txt na area de trabalho (se nao tiver sido criado ainda) e incluir o nome_cracha em uma nova linha, junto da data e hora de "impressao", quando receber a confirmação de inclusao no txt, muda o material impresso pra sim
+- criar página imprimir etiqueta, nela vai listar os usuarios e ter a opção de imprimir, por enquanto a opção de imprimir vai criar um txt na area de trabalho (se nao tiver sido criado ainda) e incluir o nome_cracha em uma nova linha, junto da data e hora de "impressao", quando receber a confirmação de inclusao no txt, muda o material impresso pra sim
 
 Futuras
 

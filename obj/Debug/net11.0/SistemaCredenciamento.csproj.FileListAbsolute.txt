@@ -35,7 +35,6 @@ C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\obj\Debug\net11.0\compr
 C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\obj\Debug\net11.0\compressed\le2j3j8snp-{0}-oyki7hvd65-oyki7hvd65.gz
 C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\obj\Debug\net11.0\compressed\fnw4uq9yba-{0}-b9sayid5wm-b9sayid5wm.gz
 C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\obj\Debug\net11.0\compressed\45dejxkchc-{0}-61n19gt1b8-61n19gt1b8.gz
-C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\obj\Debug\net11.0\compressed\nv2fc5ruev-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\obj\Debug\net11.0\compressed\6x49jb6bns-{0}-bqjiyaj88i-bqjiyaj88i.gz
 C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\obj\Debug\net11.0\compressed\awuh2o0ku6-{0}-c2jlpeoesf-c2jlpeoesf.gz
 C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\obj\Debug\net11.0\compressed\af6xftn98h-{0}-erw9l3u2r3-erw9l3u2r3.gz
@@ -127,3 +126,4 @@ C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\bin\Debug\net11.0\runti
 C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\bin\Debug\net11.0\runtimes\win-x64\native\krb5_64.dll
 C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\bin\Debug\net11.0\runtimes\win-x64\native\krbcc64.dll
 C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\bin\Debug\net11.0\runtimes\win\lib\net10.0\System.Windows.Extensions.dll
+C:\Users\Amanda Rodrigues\Desktop\Sistema_Credenciamento\obj\Debug\net11.0\compressed\nv2fc5ruev-{0}-jfuuw9dzm8-jfuuw9dzm8.gz

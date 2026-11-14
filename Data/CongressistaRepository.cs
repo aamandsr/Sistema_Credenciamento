@@ -123,6 +123,43 @@ public sealed class CongressistaRepository(MySqlConnectionFactory connectionFact
         return Convert.ToInt32(id);
     }
 
+    public async Task AdicionarVariosAsync(
+        IReadOnlyCollection<Congressista> congressistas,
+        CancellationToken cancellationToken = default)
+    {
+        if (congressistas.Count == 0)
+        {
+            throw new ArgumentException("At least one congressista is required.", nameof(congressistas));
+        }
+
+        const string sql = """
+            INSERT INTO congressista
+                (nome, nome_cracha, tipo, pagamento, material_impresso, empresa)
+            VALUES
+                (@nome, @nomeCracha, @tipo, @pagamento, @materialImpresso, @empresa);
+            """;
+
+        await using var connection = connectionFactory.CreateConnection();
+        await connection.OpenAsync(cancellationToken);
+        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+
+        foreach (var congressista in congressistas)
+        {
+            await using var command = connection.CreateCommand();
+            command.Transaction = transaction;
+            command.CommandText = sql;
+            AddParameter(command, "@nome", congressista.Nome);
+            AddParameter(command, "@nomeCracha", congressista.Nome_Cracha);
+            AddParameter(command, "@tipo", congressista.Tipo);
+            AddParameter(command, "@pagamento", congressista.Pagamento);
+            AddParameter(command, "@materialImpresso", false);
+            AddParameter(command, "@empresa", congressista.Empresa);
+            await command.ExecuteNonQueryAsync(cancellationToken);
+        }
+
+        await transaction.CommitAsync(cancellationToken);
+    }
+
     public async Task<int> AtualizarAsync(
         Congressista congressista,
         CancellationToken cancellationToken = default)
@@ -150,6 +187,26 @@ public sealed class CongressistaRepository(MySqlConnectionFactory connectionFact
         AddParameter(command, "@pagamento", congressista.Pagamento);
         AddParameter(command, "@materialImpresso", congressista.Material_Impresso);
         AddParameter(command, "@empresa", congressista.Empresa);
+
+        return await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    public async Task<int> MarcarMaterialImpressoAsync(
+        int id,
+        CancellationToken cancellationToken = default)
+    {
+        const string sql = """
+            UPDATE congressista
+            SET material_impresso = TRUE
+            WHERE id = @id AND material_impresso = FALSE;
+            """;
+
+        await using var connection = connectionFactory.CreateConnection();
+        await connection.OpenAsync(cancellationToken);
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        AddParameter(command, "@id", id);
 
         return await command.ExecuteNonQueryAsync(cancellationToken);
     }

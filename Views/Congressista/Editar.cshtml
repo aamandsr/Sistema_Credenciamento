@@ -10,7 +10,8 @@
     <input asp-for="Id" type="hidden" />
     <partial name="_Formulario" model="Model" />
     <button type="submit" class="btn btn-primary">Salvar alterações</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <a asp-action="Excluir" asp-route-id="@Model.Id" class="btn btn-danger">Excluir congressista</a>
 </form>
 
 @section Scripts {

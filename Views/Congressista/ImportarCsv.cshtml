@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Importar congressistas por CSV";
+}
+
+<h1>Importar congressistas por CSV</h1>
+
+<p>O CSV deve ser UTF-8 e ter uma linha por congressista. Os registros importados começam por padrão com a etiqueta não impressa.</p>
+<p>Use as colunas <code>nome,nome_cracha,tipo,pagamento,empresa</code>. A coluna empresa é opcional.</p>
+<pre>nome,nome_cracha,tipo,pagamento,empresa
+Maria da Silva,Maria Silva,Congressista,Sim,Empresa Exemplo
+João Souza,João Souza,Palestrante,Cortesia,</pre>
+
+<form asp-action="ImportarCsv" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <div class="mb-3">
+        <label for="arquivo" class="form-label">Arquivo CSV (máximo 5 MB)</label>
+        <input id="arquivo" name="arquivo" type="file" accept=".csv,text/csv" class="form-control" />
+        <span class="text-danger">@Html.ValidationMessage("arquivo")</span>
+    </div>
+    <button type="submit" class="btn btn-primary">Importar</button>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

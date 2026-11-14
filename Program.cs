@@ -1,4 +1,5 @@
 using SistemaCredenciamento.Data;
+using SistemaCredenciamento.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<MySqlConnectionFactory>();
 builder.Services.AddScoped<CongressistaRepository>();
+builder.Services.AddSingleton<EtiquetaArquivoService>();
+builder.Services.AddSingleton<CongressistaCsvParser>();
 
 var app = builder.Build();
 

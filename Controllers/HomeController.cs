@@ -1,19 +1,16 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SistemaCredenciamento.Data;
 using SistemaCredenciamento.Models;
 
 namespace SistemaCredenciamento.Controllers;
 
-public class HomeController : Controller
+public class HomeController(CongressistaRepository repository) : Controller
 {
-    public IActionResult Index()
+    public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
+        var congressistas = await repository.ListarAsync(cancellationToken);
+        return View(congressistas);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,8 +1,104 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model IReadOnlyList<Congressista>
+
+@{
+    ViewData["Title"] = "Credenciamento";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h1 class="mb-0">Imprimir etiquetas</h1>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Cadastrar congressista
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <a class="dropdown-item" asp-controller="Congressista" asp-action="Criar">Pelo formulário</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-controller="Congressista" asp-action="ImportarCsv">Importar por CSV</a>
+            </li>
+        </ul>
+    </div>
 </div>
+
+@if (TempData["Mensagem"] is string mensagem)
+{
+    <div class="alert alert-success alert-dismissible fade show auto-dismiss-alert" role="status">
+        @mensagem
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+@if (TempData["Erro"] is string erro)
+{
+    <div class="alert alert-danger alert-dismissible fade show auto-dismiss-alert" role="alert">
+        @erro
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+}
+
+<div class="row g-3 mb-3">
+    <div class="col-md-8">
+        <label for="filtroNome" class="form-label">Pesquisar por nome</label>
+        <input id="filtroNome" type="search" class="form-control" placeholder="Nome ou nome no crachá" autocomplete="off" />
+    </div>
+    <div class="col-md-4">
+        <label for="filtroTipo" class="form-label">Tipo</label>
+        <select id="filtroTipo" class="form-select">
+            <option value="">Todos</option>
+            <option value="Congressista">Congressista</option>
+            <option value="Palestrante">Palestrante</option>
+        </select>
+    </div>
+</div>
+
+<p id="quantidadeResultados" class="text-muted" aria-live="polite">@Model.Count congressista(s)</p>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Nome no crachá</th>
+                <th>Tipo</th>
+                <th>Empresa</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="listaCongressistas">
+            @foreach (var congressista in Model)
+            {
+                <tr data-nome="@congressista.Nome" data-nome-cracha="@congressista.Nome_Cracha" data-tipo="@congressista.Tipo">
+                    <td>@congressista.Nome</td>
+                    <td>@congressista.Nome_Cracha</td>
+                    <td>@congressista.Tipo</td>
+                    <td>@congressista.Empresa</td>
+                    <td>
+                        <div class="d-flex flex-wrap gap-2">
+                            @if (congressista.Material_Impresso)
+                            {
+                                <button type="button" class="btn btn-outline-secondary btn-sm" disabled>Impresso</button>
+                            }
+                            else
+                            {
+                                <form asp-controller="Etiqueta" asp-action="Imprimir" method="post">
+                                    <input type="hidden" name="id" value="@congressista.Id" />
+                                    <button type="submit" class="btn btn-primary btn-sm">Imprimir</button>
+                                </form>
+                            }
+                            <a class="btn btn-outline-secondary btn-sm"
+                               asp-controller="Congressista"
+                               asp-action="Editar"
+                               asp-route-id="@congressista.Id">Editar</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p id="semResultados" hidden>Nenhum congressista encontrado.</p>
+</div>
+
+<nav id="paginacao" class="mt-3" aria-label="Paginação da lista de congressistas" hidden>
+    <ul class="pagination justify-content-center"></ul>
+</nav>

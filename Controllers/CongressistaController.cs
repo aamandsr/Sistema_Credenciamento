@@ -1,16 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaCredenciamento.Data;
 using SistemaCredenciamento.Models;
+using SistemaCredenciamento.Services;
 
 namespace SistemaCredenciamento.Controllers;
 
-public sealed class CongressistaController(CongressistaRepository repository) : Controller
+public sealed class CongressistaController(
+    CongressistaRepository repository,
+    CongressistaCsvParser csvParser) : Controller
 {
-    public async Task<IActionResult> Index(CancellationToken cancellationToken)
-    {
-        var congressistas = await repository.ListarAsync(cancellationToken);
-        return View(congressistas);
-    }
+    public IActionResult Index() => RedirectToAction("Index", "Home");
 
     [HttpGet]
     public IActionResult Criar() => View(new Congressista());
@@ -27,7 +26,60 @@ public sealed class CongressistaController(CongressistaRepository repository) : 
         }
 
         await repository.AdicionarAsync(congressista, cancellationToken);
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    public IActionResult ImportarCsv() => View();
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [RequestSizeLimit(5_242_880)]
+    public async Task<IActionResult> ImportarCsv(
+        IFormFile? arquivo,
+        CancellationToken cancellationToken)
+    {
+        if (arquivo is null || arquivo.Length == 0)
+        {
+            ModelState.AddModelError(nameof(arquivo), "Selecione um arquivo CSV.");
+            return View();
+        }
+
+        if (!Path.GetExtension(arquivo.FileName).Equals(".csv", StringComparison.OrdinalIgnoreCase))
+        {
+            ModelState.AddModelError(nameof(arquivo), "O arquivo selecionado deve ter a extensão .csv.");
+            return View();
+        }
+
+        if (arquivo.Length > 5_242_880)
+        {
+            ModelState.AddModelError(nameof(arquivo), "O arquivo CSV deve ter no máximo 5 MB.");
+            return View();
+        }
+
+        string conteudo;
+        using (var leitor = new StreamReader(
+            arquivo.OpenReadStream(),
+            System.Text.Encoding.UTF8,
+            detectEncodingFromByteOrderMarks: true))
+        {
+            conteudo = await leitor.ReadToEndAsync(cancellationToken);
+        }
+
+        IReadOnlyList<Congressista> congressistas;
+        try
+        {
+            congressistas = csvParser.Parse(conteudo);
+        }
+        catch (CongressistaCsvException exception)
+        {
+            ModelState.AddModelError(nameof(arquivo), exception.Message);
+            return View();
+        }
+
+        await repository.AdicionarVariosAsync(congressistas, cancellationToken);
+        TempData["Mensagem"] = $"{congressistas.Count} congressista(s) cadastrado(s) pelo CSV.";
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpGet]
@@ -61,7 +113,7 @@ public sealed class CongressistaController(CongressistaRepository repository) : 
             return NotFound();
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpGet]
@@ -84,6 +136,6 @@ public sealed class CongressistaController(CongressistaRepository repository) : 
             return NotFound();
         }
 
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction("Index", "Home");
     }
 }
