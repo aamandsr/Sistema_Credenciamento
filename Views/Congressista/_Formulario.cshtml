@@ -1,0 +1,47 @@
+@model Congressista
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+<div class="mb-3">
+    <label asp-for="Nome" class="form-label">Nome</label>
+    <input asp-for="Nome" class="form-control" />
+    <span asp-validation-for="Nome" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Nome_Cracha" class="form-label">Nome no crachá</label>
+    <input asp-for="Nome_Cracha" class="form-control" />
+    <span asp-validation-for="Nome_Cracha" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Tipo" class="form-label">Tipo</label>
+    <select asp-for="Tipo" class="form-select">
+        <option value="">Selecione</option>
+        <option value="Congressista">Congressista</option>
+        <option value="Palestrante">Palestrante</option>
+    </select>
+    <span asp-validation-for="Tipo" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Pagamento" class="form-label">Pagamento</label>
+    <select asp-for="Pagamento" class="form-select">
+        <option value="">Selecione</option>
+        <option value="Sim">Sim</option>
+        <option value="Não">Não</option>
+        <option value="Cortesia">Cortesia</option>
+    </select>
+    <span asp-validation-for="Pagamento" class="text-danger"></span>
+</div>
+
+<div class="form-check mb-3">
+    <input asp-for="Material_Impresso" class="form-check-input" />
+    <label asp-for="Material_Impresso" class="form-check-label">Material impresso</label>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Empresa" class="form-label">Empresa</label>
+    <input asp-for="Empresa" class="form-control" />
+    <span asp-validation-for="Empresa" class="text-danger"></span>
+</div>

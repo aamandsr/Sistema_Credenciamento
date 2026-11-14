@@ -22,6 +22,11 @@ Substitua `SEU_USUARIO` e `SUA_SENHA` pelos dados do seu MySQL. O segredo fica n
 `CongressistaRepository` é o exemplo de ADO.NET usado pelo projeto:
 
 - `ListarAsync()` consulta os congressistas.
+- `ObterPorIdAsync()` consulta um congressista pelo `Id`, retornando `null` quando não existe.
 - `AdicionarAsync()` insere um congressista usando parâmetros SQL e retorna o ID criado.
+- `AtualizarAsync()` atualiza os dados de um congressista pelo `Id`.
+- `ExcluirAsync()` remove um congressista pelo `Id`.
 
-O repositório pode ser injetado em um controller pelo construtor. As consultas usam parâmetros para que os valores recebidos não sejam concatenados diretamente no SQL.
+Os métodos de atualização e exclusão retornam a quantidade de linhas afetadas pelo banco. No caso da atualização, o MySQL pode retornar `0` se o registro não existir ou se os dados enviados forem iguais aos atuais.
+
+O repositório pode ser injetado em um controller pelo construtor. O `CongressistaController` usa esses métodos para apresentar as telas de listagem, criação, edição e confirmação de exclusão. As consultas usam parâmetros para que os valores recebidos não sejam concatenados diretamente no SQL.

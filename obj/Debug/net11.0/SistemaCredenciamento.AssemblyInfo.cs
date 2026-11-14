@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SistemaCredenciamento")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+361a8beb7dcd97617497348670836bb4e22247c1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69e58e64ece38a989a6ecf265a7b93ca73ea4059")]
 [assembly: System.Reflection.AssemblyProductAttribute("SistemaCredenciamento")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SistemaCredenciamento")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

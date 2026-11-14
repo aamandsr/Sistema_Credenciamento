@@ -1,0 +1,18 @@
+@model Congressista
+
+@{
+    ViewData["Title"] = "Editar congressista";
+}
+
+<h1>Editar congressista</h1>
+
+<form asp-action="Editar" asp-route-id="@Model.Id" method="post">
+    <input asp-for="Id" type="hidden" />
+    <partial name="_Formulario" model="Model" />
+    <button type="submit" class="btn btn-primary">Salvar alterações</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

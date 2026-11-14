@@ -11,4 +11,6 @@ namespace SistemaCredenciamento.Models
         public string? Empresa { get; set; } // Aq deveria ser o id e fazer a relação com a tabela Empresa, 
         // mas como quero simplificar vai ser manualmente o nome da empresa, posteriormente posso fazer a relação com uma tabela Empresa
     }
+
+    
 }

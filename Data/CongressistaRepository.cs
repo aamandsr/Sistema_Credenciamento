@@ -5,12 +5,49 @@ namespace SistemaCredenciamento.Data;
 
 public sealed class CongressistaRepository(MySqlConnectionFactory connectionFactory)
 {
+    public async Task<Congressista?> ObterPorIdAsync(
+        int id,
+        CancellationToken cancellationToken = default)
+    {
+        const string sql = """
+            SELECT id, nome, nome_cracha, tipo, pagamento, material_impresso, empresa
+            FROM congressista
+            WHERE id = @id;
+            """;
+
+        await using var connection = connectionFactory.CreateConnection();
+        await connection.OpenAsync(cancellationToken);
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        AddParameter(command, "@id", id);
+
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        if (!await reader.ReadAsync(cancellationToken))
+        {
+            return null;
+        }
+
+        return new Congressista
+        {
+            Id = reader.GetInt32(reader.GetOrdinal("id")),
+            Nome = reader.GetString(reader.GetOrdinal("nome")),
+            Nome_Cracha = reader.GetString(reader.GetOrdinal("nome_cracha")),
+            Tipo = reader.GetString(reader.GetOrdinal("tipo")),
+            Pagamento = reader.GetString(reader.GetOrdinal("pagamento")),
+            Material_Impresso = reader.GetBoolean(reader.GetOrdinal("material_impresso")),
+            Empresa = reader.IsDBNull(reader.GetOrdinal("empresa"))
+                ? null
+                : reader.GetString(reader.GetOrdinal("empresa"))
+        };
+    }
+
     public async Task<IReadOnlyList<Congressista>> ListarAsync(
         CancellationToken cancellationToken = default)
     {
         const string sql = """
             SELECT id, nome, nome_cracha, tipo, pagamento, material_impresso, empresa
-            FROM congressistas
+            FROM congressista
             ORDER BY id;
             """;
 
@@ -54,7 +91,7 @@ public sealed class CongressistaRepository(MySqlConnectionFactory connectionFact
         CancellationToken cancellationToken = default)
     {
         const string insertSql = """
-            INSERT INTO congressistas
+            INSERT INTO congressista
                 (nome, nome_cracha, tipo, pagamento, material_impresso, empresa)
             VALUES
                 (@nome, @nomeCracha, @tipo, @pagamento, @materialImpresso, @empresa);
@@ -84,6 +121,53 @@ public sealed class CongressistaRepository(MySqlConnectionFactory connectionFact
         }
 
         return Convert.ToInt32(id);
+    }
+
+    public async Task<int> AtualizarAsync(
+        Congressista congressista,
+        CancellationToken cancellationToken = default)
+    {
+        const string sql = """
+            UPDATE congressista
+            SET nome = @nome,
+                nome_cracha = @nomeCracha,
+                tipo = @tipo,
+                pagamento = @pagamento,
+                material_impresso = @materialImpresso,
+                empresa = @empresa
+            WHERE id = @id;
+            """;
+
+        await using var connection = connectionFactory.CreateConnection();
+        await connection.OpenAsync(cancellationToken);
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        AddParameter(command, "@id", congressista.Id);
+        AddParameter(command, "@nome", congressista.Nome);
+        AddParameter(command, "@nomeCracha", congressista.Nome_Cracha);
+        AddParameter(command, "@tipo", congressista.Tipo);
+        AddParameter(command, "@pagamento", congressista.Pagamento);
+        AddParameter(command, "@materialImpresso", congressista.Material_Impresso);
+        AddParameter(command, "@empresa", congressista.Empresa);
+
+        return await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    public async Task<int> ExcluirAsync(
+        int id,
+        CancellationToken cancellationToken = default)
+    {
+        const string sql = "DELETE FROM congressista WHERE id = @id;";
+
+        await using var connection = connectionFactory.CreateConnection();
+        await connection.OpenAsync(cancellationToken);
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = sql;
+        AddParameter(command, "@id", id);
+
+        return await command.ExecuteNonQueryAsync(cancellationToken);
     }
 
     private static void AddParameter(DbCommand command, string name, object? value)

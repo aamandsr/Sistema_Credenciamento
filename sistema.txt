@@ -18,9 +18,13 @@ Regras de Negócio
 - Se pagamento = não, bloqueia impressão
 - ao receber validação de impressao, material_impresso = Sim
 - se material_impresso = sim, não pode imprimir de novo
-
+- no formulario de cadastro não tem opção de marcar o material como impresso, no de edição sim
 
 ------------------------------------------------------
 Melhorias a serem implementadas
+
+-criar página imprimir etiqueta, nela vai listar os usuarios e ter a opção de imprimir, por enquanto a opção de imprimir vai criar um txt na area de trabalho (se nao tiver sido criado ainda) e incluir o nome_cracha em uma nova linha, junto da data e hora de "impressao", quando receber a confirmação de inclusao no txt, muda o material impresso pra sim
+
+Futuras
 
 - Criar tabela empresa, e fazer um relacionamento com a tabela congressista, ao invés de só colocar o nome

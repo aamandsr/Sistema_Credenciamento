@@ -1,0 +1,17 @@
+@model Congressista
+
+@{
+    ViewData["Title"] = "Adicionar congressista";
+}
+
+<h1>Adicionar congressista</h1>
+
+<form asp-action="Criar" method="post">
+    <partial name="_Formulario" model="Model" />
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
