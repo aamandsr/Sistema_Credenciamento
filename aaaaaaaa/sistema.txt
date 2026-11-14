@@ -1,0 +1,26 @@
+Tabelas
+
+-Congressista
+    Id
+    Nome
+    Nome_Cracha
+    Tipo (Palestrante ou Congressista)
+    Pagamento (Sim, Não ou Cortesia)
+    Material_Impresso (Sim ou Não)
+    Empresa
+
+
+
+------------------------------------------------------
+Regras de Negócio
+
+- Se tipo = palestrante, pagamento = Cortesia
+- Se pagamento = não, bloqueia impressão
+- ao receber validação de impressao, material_impresso = Sim
+- se material_impresso = sim, não pode imprimir de novo
+
+
+------------------------------------------------------
+Melhorias a serem implementadas
+
+- Criar tabela empresa, e fazer um relacionamento com a tabela congressista, ao invés de só colocar o nome
