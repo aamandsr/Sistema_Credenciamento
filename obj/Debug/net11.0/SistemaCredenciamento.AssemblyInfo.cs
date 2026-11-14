@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("SistemaCredenciamento-8dcb9bf5-7561-46ae-b91e-58dfe9ff2a3a")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("SistemaCredenciamento")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4e53e067b393638e72d41a6c78745d126657d1c6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+361a8beb7dcd97617497348670836bb4e22247c1")]
 [assembly: System.Reflection.AssemblyProductAttribute("SistemaCredenciamento")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SistemaCredenciamento")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,9 @@
+# Build outputs
+bin/
+obj/
+.vs/
+
+# Local configuration may contain credentials
+appsettings.Local.json
+appsettings.*.local.json
+*.user
