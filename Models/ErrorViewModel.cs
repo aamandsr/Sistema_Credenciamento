@@ -1,4 +1,4 @@
-namespace Sistema_Credenciamento.Models;
+namespace SistemaCredenciamento.Models;
 
 public class ErrorViewModel
 {

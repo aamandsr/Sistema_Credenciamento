@@ -4,6 +4,8 @@
     <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>SistemaCredenciamento</AssemblyName>
+    <RootNamespace>SistemaCredenciamento</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

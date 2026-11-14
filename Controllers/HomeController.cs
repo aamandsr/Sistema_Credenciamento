@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Sistema_Credenciamento.Models;
+using SistemaCredenciamento.Models;
 
-namespace Sistema_Credenciamento.Controllers;
+namespace SistemaCredenciamento.Controllers;
 
 public class HomeController : Controller
 {
