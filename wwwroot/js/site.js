@@ -1,10 +1,12 @@
 ﻿document.addEventListener("DOMContentLoaded", () => {
+    // Fecha alertas temporários após três segundos.
     document.querySelectorAll(".auto-dismiss-alert").forEach((alert) => {
         window.setTimeout(() => {
             bootstrap.Alert.getOrCreateInstance(alert).close();
         }, 3000);
     });
 
+    // Localiza os controles da tela principal; nas demais páginas, não há nada a filtrar.
     const busca = document.getElementById("filtroNome");
     const filtroTipo = document.getElementById("filtroTipo");
     const lista = document.getElementById("listaCongressistas");
@@ -16,6 +18,7 @@
         return;
     }
 
+    // Mantém a navegação leve ao exibir até 25 registros por página.
     const tamanhoPagina = 25;
     const listaPaginacao = paginacao.querySelector(".pagination");
     let paginaAtual = 1;
@@ -25,6 +28,7 @@
         .replace(/[\u0300-\u036f]/g, "")
         .toLocaleLowerCase("pt-BR");
 
+    // Cria um botão de paginação com estados e rótulos acessíveis.
     const adicionarBotaoPagina = (texto, destino, opcoes = {}) => {
         const item = document.createElement("li");
         item.className = "page-item";
@@ -55,6 +59,7 @@
         listaPaginacao.append(item);
     };
 
+    // Atualiza os controles, exibindo extremos e páginas próximas à atual.
     const atualizarPaginacao = (totalPaginas) => {
         listaPaginacao.replaceChildren();
         paginacao.hidden = totalPaginas <= 1;
@@ -114,6 +119,7 @@
         });
     };
 
+    // Aplica os filtros, recorta os resultados da página atual e atualiza os indicadores.
     const atualizarLista = () => {
         const termo = normalizar(busca.value.trim());
         const tipoSelecionado = filtroTipo.value;
@@ -143,6 +149,7 @@
         atualizarPaginacao(totalPaginas);
     };
 
+    // Uma nova busca/filtro reinicia a navegação na primeira página.
     busca.addEventListener("input", () => {
         paginaAtual = 1;
         atualizarLista();

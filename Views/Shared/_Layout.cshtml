@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    @* Metadados e folhas de estilo compartilhados por todas as páginas. *@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Sistema Credenciamento</title>
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="~/SistemaCredenciamento.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @* Navegação principal do sistema. *@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -28,12 +30,14 @@
             </div>
         </nav>
     </header>
+    @* A view selecionada pelo controller é renderizada dentro desta área. *@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
+    @* Scripts comuns; cada view pode incluir scripts adicionais na seção Scripts. *@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - SistemaCredenciamento

@@ -1,7 +1,9 @@
 @model Congressista
 
+@* Exibe erros gerais do modelo antes dos campos individuais. *@
 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
+@* Cada grupo associa rótulo, entrada e mensagem ao campo correspondente do modelo. *@
 <div class="mb-3">
     <label asp-for="Nome" class="form-label">Nome</label>
     <input asp-for="Nome" class="form-control" />

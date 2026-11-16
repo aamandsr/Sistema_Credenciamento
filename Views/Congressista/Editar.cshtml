@@ -1,9 +1,11 @@
 @model Congressista
 
 @{
+    // Define o título exibido no layout compartilhado.
     ViewData["Title"] = "Editar congressista";
 }
 
+@* O identificador oculto acompanha os dados; a ação verifica se ele corresponde à rota. *@
 <h1>Editar congressista</h1>
 
 <form asp-action="Editar" asp-route-id="@Model.Id" method="post">
@@ -14,6 +16,7 @@
     <a asp-action="Excluir" asp-route-id="@Model.Id" class="btn btn-danger">Excluir congressista</a>
 </form>
 
+@* Habilita validação no navegador para as regras declaradas no modelo. *@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

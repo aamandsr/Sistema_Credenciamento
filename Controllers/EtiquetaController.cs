@@ -4,13 +4,16 @@ using SistemaCredenciamento.Services;
 
 namespace SistemaCredenciamento.Controllers;
 
+// Controla a validação e o registro da impressão de etiquetas.
 public sealed class EtiquetaController(
     CongressistaRepository repository,
     EtiquetaArquivoService arquivoService,
     ILogger<EtiquetaController> logger) : Controller
 {
+    // Mantém a rota antiga de etiquetas apontando para a tela principal.
     public IActionResult Index() => RedirectToAction("Index", "Home");
 
+    // Registra uma impressão quando as regras do congressista permitem.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Imprimir(int id, CancellationToken cancellationToken)
@@ -21,6 +24,7 @@ public sealed class EtiquetaController(
             return NotFound();
         }
 
+        // Pagamento pendente bloqueia a impressão, mas cortesia é permitida.
         if (string.Equals(
                 congressista.Pagamento.Trim(),
                 "Não",
@@ -30,18 +34,21 @@ public sealed class EtiquetaController(
             return RedirectToAction("Index", "Home");
         }
 
+        // Evita duplicar uma etiqueta já marcada como impressa.
         if (congressista.Material_Impresso)
         {
             TempData["Mensagem"] = $"A etiqueta de {congressista.Nome_Cracha} já foi impressa.";
             return RedirectToAction("Index", "Home");
         }
 
+        // O nome do crachá é o texto que será enviado ao arquivo de impressão.
         if (string.IsNullOrWhiteSpace(congressista.Nome_Cracha))
         {
             TempData["Erro"] = "Preencha o nome no crachá antes de imprimir a etiqueta.";
             return RedirectToAction("Index", "Home");
         }
 
+        // Grava a saída primeiro e converte falhas conhecidas em mensagens ao usuário.
         try
         {
             await arquivoService.AdicionarImpressaoAsync(
@@ -67,6 +74,7 @@ public sealed class EtiquetaController(
             return RedirectToAction("Index", "Home");
         }
 
+        // A operação condicional também protege contra duas impressões concorrentes.
         var linhasAfetadas = await repository.MarcarMaterialImpressoAsync(id, cancellationToken);
         if (linhasAfetadas == 0)
         {
@@ -80,6 +88,7 @@ public sealed class EtiquetaController(
             return RedirectToAction("Index", "Home");
         }
 
+        // TempData mantém o aviso disponível depois do redirecionamento.
         TempData["Mensagem"] = $"Etiqueta de {congressista.Nome_Cracha} adicionada a etiquetas.txt.";
         return RedirectToAction("Index", "Home");
     }

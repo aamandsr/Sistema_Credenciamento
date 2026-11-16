@@ -1,7 +1,9 @@
 @{
+    // Define o título exibido no layout compartilhado.
     ViewData["Title"] = "Importar congressistas por CSV";
 }
 
+@* Informa o formato aceito e mostra um exemplo de cabeçalho e linha de dados. *@
 <h1>Importar congressistas por CSV</h1>
 
 <p>O CSV deve ser UTF-8 e ter uma linha por congressista. Os registros importados começam por padrão com a etiqueta não impressa.</p>
@@ -10,6 +12,7 @@
 Maria da Silva,Maria Silva,Congressista,Sim,Empresa Exemplo
 João Souza,João Souza,Palestrante,Cortesia,</pre>
 
+@* multipart/form-data permite enviar o arquivo; os erros retornam junto ao formulário. *@
 <form asp-action="ImportarCsv" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
     <div class="mb-3">

@@ -1,9 +1,11 @@
 @model Congressista
 
 @{
+    // Define o título exibido no layout compartilhado.
     ViewData["Title"] = "Adicionar congressista";
 }
 
+@* Formulário de criação; os campos são reutilizados pela view de edição. *@
 <h1>Adicionar congressista</h1>
 
 <form asp-action="Criar" method="post">
@@ -12,6 +14,7 @@
     <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancelar</a>
 </form>
 
+@* Habilita validação no navegador para as regras declaradas no modelo. *@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

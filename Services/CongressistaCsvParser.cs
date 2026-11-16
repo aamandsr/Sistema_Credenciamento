@@ -5,8 +5,10 @@ using SistemaCredenciamento.Models;
 
 namespace SistemaCredenciamento.Services;
 
+// Interpreta e valida arquivos CSV de congressistas.
 public sealed class CongressistaCsvParser
 {
+    // Converte o conteúdo CSV em registros validados, sem gravá-los no banco de dados.
     public IReadOnlyList<Congressista> Parse(string conteudo)
     {
         if (string.IsNullOrWhiteSpace(conteudo))
@@ -14,6 +16,7 @@ public sealed class CongressistaCsvParser
             throw new CongressistaCsvException("O arquivo CSV está vazio.");
         }
 
+        // Remove BOM de UTF-8 e identifica o delimitador pelo cabeçalho.
         conteudo = conteudo.TrimStart('\uFEFF');
         var primeiraLinha = conteudo.Split(new[] { '\r', '\n' }, 2)[0];
         var delimitador = primeiraLinha.Count(caractere => caractere == ';') >=
@@ -21,6 +24,7 @@ public sealed class CongressistaCsvParser
             ? ";"
             : ",";
 
+        // TextFieldParser respeita campos entre aspas e delimitadores dentro deles.
         using var parser = new TextFieldParser(new StringReader(conteudo));
         parser.TextFieldType = FieldType.Delimited;
         parser.HasFieldsEnclosedInQuotes = true;
@@ -42,6 +46,7 @@ public sealed class CongressistaCsvParser
             throw new CongressistaCsvException("O CSV precisa ter uma linha de cabeçalho.");
         }
 
+        // Associa cada nome de coluna normalizado à posição correspondente no arquivo.
         var colunas = new Dictionary<string, int>(StringComparer.Ordinal);
         for (var indice = 0; indice < cabecalhos.Length; indice++)
         {
@@ -59,6 +64,7 @@ public sealed class CongressistaCsvParser
             }
         }
 
+        // Apenas empresa é opcional; os demais campos são necessários para o cadastro.
         var colunasObrigatorias = new[] { "nome", "nomecracha", "tipo", "pagamento" };
         var ausentes = colunasObrigatorias.Where(coluna => !colunas.ContainsKey(coluna)).ToArray();
         if (ausentes.Length > 0)
@@ -67,6 +73,7 @@ public sealed class CongressistaCsvParser
                 $"Colunas obrigatórias ausentes: {string.Join(", ", ausentes)}.");
         }
 
+        // Processa e valida cada linha antes de devolver qualquer registro ao controller.
         var congressistas = new List<Congressista>();
         var numeroRegistro = 1;
         while (!parser.EndOfData)
@@ -137,6 +144,7 @@ public sealed class CongressistaCsvParser
             });
         }
 
+        // Evita uma importação vazia ser tratada como uma operação bem-sucedida.
         if (congressistas.Count == 0)
         {
             throw new CongressistaCsvException("O CSV não contém congressistas para cadastrar.");
@@ -145,12 +153,14 @@ public sealed class CongressistaCsvParser
         return congressistas;
     }
 
+    // Busca o campo usando o índice definido pelo cabeçalho e remove espaços externos.
     private static string ObterCampo(
         IReadOnlyList<string> campos,
         IReadOnlyDictionary<string, int> colunas,
         string coluna) =>
         campos[colunas[coluna]].Trim();
 
+    // Uniformiza acentos, espaços e underscores para comparar cabeçalhos e opções.
     private static string Normalizar(string valor)
     {
         var semAcentos = valor.Trim().Normalize(NormalizationForm.FormD);
@@ -170,5 +180,6 @@ public sealed class CongressistaCsvParser
     }
 }
 
+// Erro de validação legível para problemas encontrados durante a importação CSV.
 public sealed class CongressistaCsvException(string message, Exception? innerException = null)
     : Exception(message, innerException);
